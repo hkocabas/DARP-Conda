@@ -28,7 +28,7 @@ After the desired area division is achieved, we use [Spanning Tree Coverage (STC
 
 This project was created using:
 
-* Python version >= 3.6.14
+* Python version >= 3.9.2
 * OpenCV version >= 4.5.2.54
 * Pygame version >= 2.0.1
 * Scipy version >= 1.7.1
@@ -39,10 +39,21 @@ This project was created using:
 
 #### To install the application, use:
 ```
-git clone https://github.com/alice-st/DARP-Python.git
-cd DARP
-./Dependencies.sh DARP
-source DARP/bin/activate
+git clone https://github.com/hkocabas/DARP-Conda.git
+cd DARP-Conda/
+conda create -y --name darp python==3.9.2
+pip install \
+	numpy==1.20\
+	opencv-python==4.5.4.60 \
+	pygame==2.1.0 \
+	scipy==1.7.3 \
+	jupyter==1.0.0 \
+  numba==0.54.1\
+  nose==1.3.7\
+  parameterized==0.8.1\
+  sklearn \
+  Pillow
+pip install -U scikit-learn scipy matplotlib
 ```
 
 #### To run the application, use:
