@@ -11,59 +11,77 @@ from turns import turns
 from PIL import Image
 import time
 
-def get_area_map(path, area=0, obs=-1):
-    """
-    Creates an array from a given png-image(path).
-    :param path: path to the png-image
-    :param area: non-obstacles tiles value; standard is 0
-    :param obs: obstacle tiles value; standard is -1
-    :return: an array of area(0) and obstacle(-1) tiles
-    """
-    le_map = np.array(Image.open(path))
-    ma = np.array(le_map).mean(axis=2) != 0
-    le_map = np.int8(np.zeros(ma.shape))
-    le_map[ma] = area
-    le_map[~ma] = obs
-    return le_map
+# def get_area_map(path, area=0, obs=-1):
+#     """
+#     Creates an array from a given png-image(path).
+#     :param path: path to the png-image
+#     :param area: non-obstacles tiles value; standard is 0
+#     :param obs: obstacle tiles value; standard is -1
+#     :return: an array of area(0) and obstacle(-1) tiles
+#     """
+#     le_map = np.array(Image.open(path))
+#     ma = np.array(le_map).mean(axis=2) != 0
+#     le_map = np.int8(np.zeros(ma.shape))
+#     le_map[ma] = area
+#     le_map[~ma] = obs
+#     return le_map
 
-def get_area_indices(area, value, inv=False, obstacle=-1):
-    """
-    Returns area tiles indices that have value
-    If inv(erted), returns indices that don't have value
-    :param area: array with value and obstacle tiles
-    :param value: searched tiles with value
-    :param inv: if True: search will be inverted and index of non-value tiles will get returned
-    :param obstacle: defines obstacle tiles
-    :return:
-    """
-    try:
-        value = int(value)
-        if inv:
-            return np.concatenate([np.where((area != value))]).T
-        return np.concatenate([np.where((area == value))]).T
-    except:
-        mask = area == value[0]
-        if inv:
-            mask = area != value[0]
-        for v in value[1:]:
-            if inv:
-                mask &= area != v
-            else:
-                mask |= area == v
-        mask &= area != obstacle
-        return np.concatenate([np.where(mask)]).T
+# def get_area_indices(area, value, inv=False, obstacle=-1):
+#     """
+#     Returns area tiles indices that have value
+#     If inv(erted), returns indices that don't have value
+#     :param area: array with value and obstacle tiles
+#     :param value: searched tiles with value
+#     :param inv: if True: search will be inverted and index of non-value tiles will get returned
+#     :param obstacle: defines obstacle tiles
+#     :return:
+#     """
+#     try:
+#         value = int(value)
+#         if inv:
+#             return np.concatenate([np.where((area != value))]).T
+#         return np.concatenate([np.where((area == value))]).T
+#     except:
+#         mask = area == value[0]
+#         if inv:
+#             mask = area != value[0]
+#         for v in value[1:]:
+#             if inv:
+#                 mask &= area != v
+#             else:
+#                 mask |= area == v
+#         mask &= area != obstacle
+#         return np.concatenate([np.where(mask)]).T
 
 class MultiRobotPathPlanner(DARP):
-    def __init__(self, nx, ny, notEqualPortions, initial_positions, portions,
-                 obs_pos, visualization, MaxIter=80000, CCvariation=0.01,
-                 randomLevel=0.0001, dcells=2, importance=False):
+    def __init__(self,
+                grid_row=10,
+                grid_column=10,
+                agent_initial_positions=[0, 3, 9],
+                obstacle_positions=[5, 6, 7],
+                equal_portions=False,
+                portions=[0.2, 0.3, 0.5],
+                visualization=False,
+                MaxIter=80000,
+                CCvariation=0.01,
+                randomLevel=0.0001,
+                dcells=2,
+                importance=False):
 
         start_time = time.time()
         # Initialize DARP
-        self.darp_instance = DARP(nx, ny, notEqualPortions, initial_positions, portions, obs_pos, visualization,
-                                  MaxIter=MaxIter, CCvariation=CCvariation,
-                                  randomLevel=randomLevel, dcells=dcells,
-                                  importance=importance)
+        self.darp_instance = DARP(grid_row,
+                                grid_column,
+                                agent_initial_positions,
+                                obstacle_positions,
+                                equal_portions,
+                                portions,
+                                visualization,
+                                MaxIter=MaxIter,
+                                CCvariation=CCvariation,
+                                randomLevel=randomLevel,
+                                dcells=dcells,
+                                importance=importance)
 
         # Divide areas based on robots initial positions
         self.DARP_success , self.iterations = self.darp_instance.divideRegions()
@@ -71,7 +89,9 @@ class MultiRobotPathPlanner(DARP):
         # Check if solution was found
         if not self.DARP_success:
             print("DARP did not manage to find a solution for the given configuration!")
+            print("iterations...", self.iterations)
         else:
+            print("self.iterations", self.iterations)
             # Iterate for 4 different ways to join edges in MST
             self.mode_to_drone_turns = []
             AllRealPaths_dict = {}
@@ -153,7 +173,6 @@ class MultiRobotPathPlanner(DARP):
             min_mode_returnPaths = AllRealPaths_dict[self.min_mode]
 
             # Uncomment if you want to visualize all available modes
-            
             # if self.darp_instance.visualization:
             #     for mode in range(4):
             #         image = visualize_paths(AllRealPaths_dict[mode], subCellsAssignment_dict[mode],
@@ -197,6 +216,7 @@ class MultiRobotPathPlanner(DARP):
             print(f'Maximum number of cells in robots paths: {max(best_case_num_paths)}')
             print(f'Average number of cells in robots paths: {np.mean(np.array(best_case_num_paths))}')
             print(f'\nTurns Analysis: {self.best_case}')
+            print(f'\nTime it take: {self.execution_time}')
             
     def CalcRealBinaryReg(self, BinaryRobotRegion, rows, cols):
         temp = np.zeros((2*rows, 2*cols))
@@ -220,44 +240,22 @@ class MultiRobotPathPlanner(DARP):
             MSTs.append(k.mst)
         return MSTs
 
-
 if __name__ == '__main__':
-    argparser = argparse.ArgumentParser(
-        description=__doc__)
-    argparser.add_argument(
-        '-grid',
-        default=(10, 10),
-        type=int,
-        nargs=2,
-        help='Dimensions of the Grid (default: (10, 10))')
-    argparser.add_argument(
-        '-obs_pos',
-        default=[5, 6, 7],
-        nargs='*',
-        type=int,
-        help='Obstacles Positions (default: None)')
-    argparser.add_argument(
-        '-in_pos',
-        default=[0, 3, 9],
-        nargs='*',
-        type=int,
-        help='Initial Positions of the robots (default: (1, 3, 9))')
-    argparser.add_argument(
-        '-nep',
-        action='store_true',
-        help='Not Equal Portions shared between the Robots in the Grid (default: False)')
-    argparser.add_argument(
-        '-portions',
-        default=[0.2, 0.3, 0.5],
-        nargs='*',
-        type=float,
-        help='Portion for each Robot in the Grid (default: (0.2, 0.7, 0.1))')
-    argparser.add_argument(
-        '-vis',
-        default=False,
-        action='store_true',
-        help='Visualize results (default: False)')
-    args = argparser.parse_args()
-
-
-    MultiRobotPathPlanner(args.grid[0], args.grid[1], args.nep, args.in_pos,  args.portions, args.obs_pos, args.vis)
+    MultiRobotPathPlanner(
+                            grid_row=5,
+                            grid_column=5,
+                            agent_initial_positions=[0, 2, 4],
+                            obstacle_positions=[7, 8],
+                            # equal_portions=False,
+                            # portions=[0.2, 0.3, 0.5],
+                            visualization=True,
+                            # MaxIter=80000,
+                            # CCvariation=0.01,
+                            # randomLevel=0.0001,
+                            # dcells=2,
+                            # importance=False
+    )
+    
+    # received_map = get_area_map("/media/hmk/Files/Projects/DARP-Conda/images/aaa.jpg")
+    # MultiRobotPathPlanner(received_map)
+    

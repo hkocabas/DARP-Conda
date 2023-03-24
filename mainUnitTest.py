@@ -14,22 +14,34 @@ dcells = 2
 importance = False
 
 cases = [
-    MultiRobotPathPlanner(10, 10,
-                          False, [1, 3, 9],
-                          [0.2, 0.3, 0.5], [],
-                          False),
-    MultiRobotPathPlanner(20, 20,
-                          False, [1, 50, 76, 83],
-                          [0.2, 0.3, 0.5], [3, 4, 5, 6, 7, 8, 99, 100, 101, 102],
-                          False),
-    MultiRobotPathPlanner(50, 50,
-                          False, [1, 2, 3, 4],
-                          [0.2, 0.3, 0.5], [],
-                          False),
-    MultiRobotPathPlanner(50, 50,
-                          False, [500, 624, 1500, 2159, 2],
-                          [0.2, 0.3, 0.5], [2490, 2491, 2492, 2493, 2494, 2495, 2496, 2497, 2498, 2499],
-                          False)
+    MultiRobotPathPlanner(10,
+                        10,
+                        [1, 3, 9],              # agent initial positions
+                        [],                     # obs position
+                        False,                  # equalportions
+                        [0.2, 0.3, 0.5],        # portions
+                        False),
+    MultiRobotPathPlanner(20,
+                        20,
+                        [1, 50, 76, 83],
+                        [3, 4, 5, 6, 7, 8, 99, 100, 101, 102],
+                        False,
+                        [0.2, 0.3, 0.5],
+                        False),
+    MultiRobotPathPlanner(50,
+                        50,
+                        [1, 2, 3, 4],
+                        [],
+                        False,
+                        [0.2, 0.3, 0.5],
+                        False),
+    MultiRobotPathPlanner(50,
+                        50,
+                        [500, 624, 1500, 2159, 2],
+                        [2490, 2491, 2492, 2493, 2494, 2495, 2496, 2497, 2498, 2499],
+                        False,
+                        [0.2, 0.3, 0.5],
+                        False)
 ]
 
 @parameterized_class(('multiRobot', 'case'), [

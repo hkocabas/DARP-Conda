@@ -84,14 +84,23 @@ def CalcConnectedMultiplier(rows, cols, dist1, dist2, CCvariation):
 
 
 class DARP:
-    def __init__(self, nx, ny, notEqualPortions, given_initial_positions, given_portions, obstacles_positions,
-                 visualization, MaxIter=80000, CCvariation=0.01,
-                 randomLevel=0.0001, dcells=2,
-                 importance=False):
+    def __init__(self,
+                grid_row,
+                grid_column,
+                agent_initial_positions,
+                obstacle_positions,
+                equal_portions,
+                portions,
+                visualization,
+                MaxIter=80000,
+                CCvariation=0.01,
+                randomLevel=0.0001,
+                dcells=2,
+                importance=False):
 
-        self.rows = nx
-        self.cols = ny
-        self.initial_positions, self.obstacles_positions, self.portions = self.sanity_check(given_initial_positions, given_portions, obstacles_positions, notEqualPortions)
+        self.rows = grid_row
+        self.cols = grid_column
+        self.initial_positions, self.obstacles_positions, self.portions = self.sanity_check(agent_initial_positions, portions, obstacle_positions, equal_portions)
 
         self.visualization = visualization
         self.MaxIter = MaxIter
@@ -99,11 +108,11 @@ class DARP:
         self.randomLevel = randomLevel
         self.dcells = dcells
         self.importance = importance
-        self.notEqualPortions = notEqualPortions
+        self.notEqualPortions = equal_portions
     
 
         print("\nInitial Conditions Defined:")
-        print("Grid Dimensions:", nx, ny)
+        print("Grid Dimensions:", grid_row, grid_column)
         print("Number of Robots:", len(self.initial_positions))
         print("Initial Robots' positions", self.initial_positions)
         print("Portions for each Robot:", self.portions, "\n")
