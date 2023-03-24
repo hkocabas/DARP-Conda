@@ -11,20 +11,20 @@ from turns import turns
 from PIL import Image
 import time
 
-# def get_area_map(path, area=0, obs=-1):
-#     """
-#     Creates an array from a given png-image(path).
-#     :param path: path to the png-image
-#     :param area: non-obstacles tiles value; standard is 0
-#     :param obs: obstacle tiles value; standard is -1
-#     :return: an array of area(0) and obstacle(-1) tiles
-#     """
-#     le_map = np.array(Image.open(path))
-#     ma = np.array(le_map).mean(axis=2) != 0
-#     le_map = np.int8(np.zeros(ma.shape))
-#     le_map[ma] = area
-#     le_map[~ma] = obs
-#     return le_map
+def get_area_map(path, row, col):
+    load_img_rz = np.array(Image.open(path).resize((row,col)))
+    grid_map = np.zeros([col, row], dtype = int)
+
+    for i in range(len(load_img_rz)):
+        for j in range(len(load_img_rz[0])):
+            if list(load_img_rz[i][j]) == [255, 255, 255]:
+                grid_map[i][j] = 0
+            else:
+                grid_map[i][j] = 1
+
+    return grid_map
+
+
 
 # def get_area_indices(area, value, inv=False, obstacle=-1):
 #     """
@@ -248,7 +248,7 @@ if __name__ == '__main__':
                             obstacle_positions=[7, 8],
                             # equal_portions=False,
                             # portions=[0.2, 0.3, 0.5],
-                            visualization=True,
+                            visualization=False,
                             # MaxIter=80000,
                             # CCvariation=0.01,
                             # randomLevel=0.0001,
@@ -256,6 +256,6 @@ if __name__ == '__main__':
                             # importance=False
     )
     
-    # received_map = get_area_map("/media/hmk/Files/Projects/DARP-Conda/images/aaa.jpg")
-    # MultiRobotPathPlanner(received_map)
+    turned_data = get_area_map("/media/hmk/Files/Projects/DARP-Conda/images/2_640_480.png", 32, 24)
+    print(turned_data)
     
