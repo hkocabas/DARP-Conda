@@ -18,11 +18,11 @@ class visualize_paths():
 
         self.DroneNo = DroneNo
         self._VARS = {'surf': False,
-                      'gridWH': (self.dimensions[0], self.dimensions[1]),
-                      'gridOrigin': (0, 0),
-                      'gridCellsX': self.subCellsAssignment.shape[0],
-                      'gridCellsY': self.subCellsAssignment.shape[1],
-                      'lineWidth': 2}
+                        'gridWH': (self.dimensions[0], self.dimensions[1]),
+                        'gridOrigin': (0, 0),
+                        'gridCellsX': self.subCellsAssignment.shape[0],
+                        'gridCellsY': self.subCellsAssignment.shape[1],
+                        'lineWidth': 2}
         self.color = color
 
     def visualize_paths(self, mode):
@@ -50,11 +50,11 @@ class visualize_paths():
             for point in self.AllRealPaths[r]:
                 color = pygame.Color(255, 0, 0)
                 pygame.draw.line(self._VARS['surf'],
-                                 self.color[r],
-                                 (self._VARS['gridOrigin'][0] + (celldimX*point[1] + celldimX/2),
-                                  self._VARS['gridOrigin'][1] + (celldimY*point[0]) + celldimY/2),
-                                 (self._VARS['gridOrigin'][0] + (celldimX*point[3]) + celldimX/2,
-                                  self._VARS['gridOrigin'][1] + (celldimY*point[2]) + celldimY/2), width=4)
+                                    self.color[r],
+                                    (self._VARS['gridOrigin'][0] + (celldimX*point[1] + celldimX/2),
+                                    self._VARS['gridOrigin'][1] + (celldimY*point[0]) + celldimY/2),
+                                    (self._VARS['gridOrigin'][0] + (celldimX*point[3]) + celldimX/2,
+                                    self._VARS['gridOrigin'][1] + (celldimY*point[2]) + celldimY/2), width=4)
 
         cellBorder = 0
 
@@ -71,9 +71,8 @@ class visualize_paths():
     # Draw filled rectangle at coordinates
     def drawSquareCell(self, x, y, dimX, dimY, color):
         pygame.draw.rect(
-         self._VARS['surf'], color,
-         (x, y, dimX, dimY)
-        )
+            self._VARS['surf'], color,
+            (x, y, dimX, dimY))
 
     def drawSquareGrid(self, origin, gridWH, cellsX, cellsY):
         CONTAINER_WIDTH_HEIGHT = gridWH
@@ -82,28 +81,28 @@ class visualize_paths():
         # DRAW Grid Border:
         # TOP lEFT TO RIGHT
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (cont_x, cont_y),
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (cont_x, cont_y),
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y), self._VARS['lineWidth'])
 
         # # BOTTOM lEFT TO RIGHT
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (cont_x, CONTAINER_WIDTH_HEIGHT[0] + cont_y),
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
-           CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (cont_x, CONTAINER_WIDTH_HEIGHT[0] + cont_y),
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
+            CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
 
         # # LEFT TOP TO BOTTOM
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (cont_x, cont_y),
-          (cont_x, cont_y + CONTAINER_WIDTH_HEIGHT[0]), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (cont_x, cont_y),
+            (cont_x, cont_y + CONTAINER_WIDTH_HEIGHT[0]), self._VARS['lineWidth'])
         # # RIGHT TOP TO BOTTOM
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y),
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
-           CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y),
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
+            CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
 
         # Get cell size, just one since its a square grid.
         cellSizeX = CONTAINER_WIDTH_HEIGHT[0]/cellsX
@@ -111,15 +110,15 @@ class visualize_paths():
 
         for x in range(cellsY):
             pygame.draw.line(
-               self._VARS['surf'], BLACK,
-               (cont_x + (cellSizeX * x), cont_y),
-               (cont_x + (cellSizeX * x), CONTAINER_WIDTH_HEIGHT[0] + cont_y), 2)
+                self._VARS['surf'], BLACK,
+                (cont_x + (cellSizeX * x), cont_y),
+                (cont_x + (cellSizeX * x), CONTAINER_WIDTH_HEIGHT[0] + cont_y), 2)
         for y in range(cellsX):
         # # HORIZONTAl DIVISIONS
             pygame.draw.line(
-              self._VARS['surf'], BLACK,
-              (cont_x, cont_y + (cellSizeY*y)),
-              (cont_x + CONTAINER_WIDTH_HEIGHT[1], cont_y + (cellSizeY*y)), 2)
+                self._VARS['surf'], BLACK,
+                (cont_x, cont_y + (cellSizeY*y)),
+                (cont_x + CONTAINER_WIDTH_HEIGHT[1], cont_y + (cellSizeY*y)), 2)
 
     def checkEvents(self):
         for event in pygame.event.get():
@@ -137,11 +136,11 @@ class darp_area_visualization(object):
 
         self.DroneNo = DroneNo
         self._VARS = {'surf': False,
-                      'gridWH': (dimensions[0], dimensions[1]),
-                      'gridOrigin': (0, 0),
-                      'gridCellsX': self.Assignment_matrix.shape[0],
-                      'gridCellsY': self.Assignment_matrix.shape[1],
-                      'lineWidth': 2}
+                        'gridWH': (dimensions[0], dimensions[1]),
+                        'gridOrigin': (0, 0),
+                        'gridCellsX': self.Assignment_matrix.shape[0],
+                        'gridCellsY': self.Assignment_matrix.shape[1],
+                        'lineWidth': 2}
         self.color = color
         self.init_robot_pos_colors = [np.clip((r[0] - 20, r[1] + 20, r[2] - 20), 0, 255).tolist() for r in self.color]
         self.init_robot_pos = init_robot_pos
@@ -171,28 +170,28 @@ class darp_area_visualization(object):
         # DRAW Grid Border:
         # TOP lEFT TO RIGHT
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (cont_x, cont_y),
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (cont_x, cont_y),
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y), self._VARS['lineWidth'])
 
         # # BOTTOM lEFT TO RIGHT
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (cont_x, CONTAINER_WIDTH_HEIGHT[0] + cont_y),
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
-           CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (cont_x, CONTAINER_WIDTH_HEIGHT[0] + cont_y),
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
+            CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
 
         # # LEFT TOP TO BOTTOM
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (cont_x, cont_y),
-          (cont_x, cont_y + CONTAINER_WIDTH_HEIGHT[0]), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (cont_x, cont_y),
+            (cont_x, cont_y + CONTAINER_WIDTH_HEIGHT[0]), self._VARS['lineWidth'])
         # # RIGHT TOP TO BOTTOM
         pygame.draw.line(
-          self._VARS['surf'], BLACK,
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y),
-          (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
-           CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
+            self._VARS['surf'], BLACK,
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x, cont_y),
+            (CONTAINER_WIDTH_HEIGHT[1] + cont_x,
+            CONTAINER_WIDTH_HEIGHT[0] + cont_y), self._VARS['lineWidth'])
 
         # Get cell size, just one since its a square grid.
         cellSizeX = CONTAINER_WIDTH_HEIGHT[0]/cellsX
@@ -200,15 +199,15 @@ class darp_area_visualization(object):
 
         for x in range(cellsY):
             pygame.draw.line(
-               self._VARS['surf'], BLACK,
-               (cont_x + (cellSizeX * x), cont_y),
-               (cont_x + (cellSizeX * x), CONTAINER_WIDTH_HEIGHT[0] + cont_y), 2)
+                self._VARS['surf'], BLACK,
+                (cont_x + (cellSizeX * x), cont_y),
+                (cont_x + (cellSizeX * x), CONTAINER_WIDTH_HEIGHT[0] + cont_y), 2)
         for y in range(cellsX):
         # # HORIZONTAl DIVISIONS
             pygame.draw.line(
-              self._VARS['surf'], BLACK,
-              (cont_x, cont_y + (cellSizeY*y)),
-              (cont_x + CONTAINER_WIDTH_HEIGHT[1], cont_y + (cellSizeY*y)), 2)
+                self._VARS['surf'], BLACK,
+                (cont_x, cont_y + (cellSizeY*y)),
+                (cont_x + CONTAINER_WIDTH_HEIGHT[1], cont_y + (cellSizeY*y)), 2)
 
         pygame.display.update()
     
@@ -243,7 +242,7 @@ class darp_area_visualization(object):
                                 self._VARS['gridOrigin'][1] + (celldimY*row)
                                 + self._VARS['lineWidth']/2,
                                 celldimX, celldimY, self.color[r])
-       
+
         self.drawSquareGrid(self._VARS['gridOrigin'], self._VARS['gridWH'], 
                             self._VARS['gridCellsX'], self._VARS['gridCellsY'])
         
@@ -252,6 +251,5 @@ class darp_area_visualization(object):
 
     def drawSquareCell(self, x, y, dimX, dimY, color):
         pygame.draw.rect(
-         self._VARS['surf'], color,
-         (x, y, dimX, dimY)
-        )
+            self._VARS['surf'], color,
+            (x, y, dimX, dimY))

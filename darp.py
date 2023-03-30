@@ -120,7 +120,7 @@ class DARP:
         self.droneNo = len(self.initial_positions)
         self.A = np.zeros((self.rows, self.cols))
         self.GridEnv = self.defineGridEnv()
-   
+
         self.connectivity = np.zeros((self.droneNo, self.rows, self.cols), dtype=np.uint8)
         self.BinaryRobotRegions = np.zeros((self.droneNo, self.rows, self.cols), dtype=bool)
 
@@ -174,7 +174,7 @@ class DARP:
                     sys.exit(5)
 
         return initial_positions, obstacles_positions, portions
-          
+
     def defineGridEnv(self):
         GridEnv = np.full(shape=(self.rows, self.cols), fill_value=-1)  # create non obstacle map with value -1
         
@@ -218,11 +218,11 @@ class DARP:
 
             while iteration <= self.MaxIter and not cancelled:
                 self.A, self.ArrayOfElements = assign(self.droneNo,
-                                                      self.rows,
-                                                      self.cols,
-                                                      self.GridEnv,
-                                                      self.MetricMatrix,
-                                                      self.A)
+                                                        self.rows,
+                                                        self.cols,
+                                                        self.GridEnv,
+                                                        self.MetricMatrix,
+                                                        self.A)
                 ConnectedMultiplierList = np.ones((self.droneNo, self.rows, self.cols))
                 ConnectedRobotRegions = np.zeros(self.droneNo)
                 plainErrors = np.zeros((self.droneNo))
@@ -237,8 +237,8 @@ class DARP:
                         ConnectedRobotRegions[r] = False
                         BinaryRobot, BinaryNonRobot = constructBinaryImages(labels_im, self.initial_positions[r], self.rows, self.cols)
                         ConnectedMultiplier = CalcConnectedMultiplier(self.rows, self.cols,
-                                                                      self.NormalizedEuclideanDistanceBinary(True, BinaryRobot),
-                                                                      self.NormalizedEuclideanDistanceBinary(False, BinaryNonRobot), self.CCvariation)
+                                                                        self.NormalizedEuclideanDistanceBinary(True, BinaryRobot),
+                                                                        self.NormalizedEuclideanDistanceBinary(False, BinaryNonRobot), self.CCvariation)
                     ConnectedMultiplierList[r, :, :] = ConnectedMultiplier
                     plainErrors[r] = self.ArrayOfElements[r]/(self.DesireableAssign[r]*self.droneNo)
                     if plainErrors[r] < downThres:

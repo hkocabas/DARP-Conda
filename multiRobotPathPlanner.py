@@ -248,7 +248,7 @@ if __name__ == '__main__':
                             obstacle_positions=[7, 8],
                             # equal_portions=False,
                             # portions=[0.2, 0.3, 0.5],
-                            visualization=False,
+                            visualization=True,
                             # MaxIter=80000,
                             # CCvariation=0.01,
                             # randomLevel=0.0001,
@@ -256,6 +256,6 @@ if __name__ == '__main__':
                             # importance=False
     )
     
-    turned_data = get_area_map("/media/hmk/Files/Projects/DARP-Conda/images/2_640_480.png", 32, 24)
-    print(turned_data)
+    # turned_data = get_area_map("/media/hmk/Files/Projects/DARP-Conda/images/2_640_480.png", 32, 24)
+    # print(turned_data)
     
